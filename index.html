@@ -2,24 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Car Repair Shop Finder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASAP Auto Repair Finder</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
     <div class="search-container">
-      <input type="text" id="locationInput" placeholder="Enter Location">
-      <input type="number" id="radiusInput" placeholder="Radius (km)">
+      <input type="text" id="locationInput" placeholder="Enter your location">
+      <input type="number" id="radiusInput" placeholder="Radius (km)" min="1">
       <button onclick="searchShops()">Search</button>
     </div>
+    <!-- Map container -->
     <div id="map"></div>
+    <!-- Results container -->
     <div id="results"></div>
   </div>
   <script src="script.js"></script>
-  <!-- Replace YOUR_API_KEY with your actual key, and ensure the Places library is included -->
-  <script async defer
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ_wvUHsBJuwTL-TKi6S2-Q1oLdhdAAz4&libraries=places,geometry&callback=initMap">
-  </script>
+  <!-- Load Google Maps API -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR6fMtO39bkSnjdtP9L0oteWiVNnsHNg4&callback=initMap"></script>
+
 </body>
 </html>
+
 
