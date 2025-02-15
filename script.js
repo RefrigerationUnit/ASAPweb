@@ -72,7 +72,8 @@ function searchShops() {
       const bounds = new google.maps.LatLngBounds();
       bounds.extend(userLocation); // Include user's location in bounds
 
-      results.slice(0, 10).forEach((place, index) => {
+      // Display ALL results (no slice limit)
+      results.forEach((place, index) => {
         const distance = (google.maps.geometry.spherical.computeDistanceBetween(
           userLocation, place.geometry.location
         ) / 1000).toFixed(1);
