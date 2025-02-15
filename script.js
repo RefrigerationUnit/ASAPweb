@@ -11,7 +11,6 @@ function initMap() {
   service = new google.maps.places.PlacesService(map);
 }
 
-// New repair cost estimation functionality
 function estimateCost() {
   const brand = document.getElementById("carBrand").value;
   const model = document.getElementById("carModel").value;
@@ -34,6 +33,8 @@ function estimateCost() {
 function searchShops() {
   const location = document.getElementById("locationInput").value;
   const radius = document.getElementById("radiusInput").value;
+  const sortBy = document.getElementById("sortBy").value;
+  const resultsLimitInput = document.getElementById("resultsLimit").value;
   const geocoder = new google.maps.Geocoder();
 
   // Validate inputs
@@ -41,6 +42,11 @@ function searchShops() {
     document.getElementById("results").innerHTML = "Please enter a valid location and radius.";
     return;
   }
+
+  // Set default results limit to 30 if input is empty or invalid
+  const resultsLimit = resultsLimitInput && !isNaN(resultsLimitInput) && resultsLimitInput > 0
+    ? parseInt(resultsLimitInput, 10)
+    : 30;
 
   geocoder.geocode({ address: location }, (results, status) => {
     if (status !== "OK") {
@@ -68,7 +74,8 @@ function searchShops() {
     const request = {
       location: userLocation,
       radius: radius * 1000,
-      type: "car_repair"
+      type: "car_repair",
+      rankBy: google.maps.places.RankBy.PROMINENCE // Ensure we get up to 30 results
     };
 
     service.nearbySearch(request, (results, status) => {
@@ -80,23 +87,36 @@ function searchShops() {
         return;
       }
 
-      // Process results
-      results.sort((a, b) => 
-        google.maps.geometry.spherical.computeDistanceBetween(userLocation, a.geometry.location) - 
-        google.maps.geometry.spherical.computeDistanceBetween(userLocation, b.geometry.location)
-      );
+      // Add distance to each result
+      results.forEach(place => {
+        place.distance = google.maps.geometry.spherical.computeDistanceBetween(
+          userLocation, place.geometry.location
+        );
+      });
 
-      // Display results
-      resultsDiv.innerHTML = `<h2>Found ${results.length} Car Repair Shops:</h2>`;
+      // Sort results based on selected option
+      switch (sortBy) {
+        case "rating":
+          results.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+          break;
+        case "reviews":
+          results.sort((a, b) => (b.user_ratings_total || 0) - (a.user_ratings_total || 0));
+          break;
+        case "distance":
+        default:
+          results.sort((a, b) => a.distance - b.distance);
+          break;
+      }
+
+      // Display results (up to the specified limit or 30 by default)
+      resultsDiv.innerHTML = `<h2>Found the following Car Repair Shops:</h2>`;
       
       const bounds = new google.maps.LatLngBounds();
       bounds.extend(userLocation); // Include user's location in bounds
 
-      // Display ALL results (no slice limit)
-      results.forEach((place, index) => {
-        const distance = (google.maps.geometry.spherical.computeDistanceBetween(
-          userLocation, place.geometry.location
-        ) / 1000).toFixed(1);
+      // Display up to the specified number of results
+      results.slice(0, resultsLimit).forEach((place, index) => {
+        const distance = (place.distance / 1000).toFixed(1);
 
         // Create marker
         const marker = new google.maps.Marker({
@@ -116,7 +136,8 @@ function searchShops() {
             <strong>${index + 1}. ${place.name}</strong><br>
             ${place.vicinity}<br>
             Distance: ${distance} km<br>
-            Rating: ${place.rating || 'Not available'}
+            Rating: ${place.rating || 'Not available'}<br>
+            Reviews: ${place.user_ratings_total || 'Not available'}
           </div><br>`;
       });
 
