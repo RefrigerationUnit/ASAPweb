@@ -33,7 +33,15 @@
       <div class="search-container">
         <input type="text" id="locationInput" placeholder="Enter Location">
         <input type="number" id="radiusInput" placeholder="Radius (km)">
-        <button onclick="searchShops()">Find Repair Shops</button>
+        <div class="search-controls">
+          <button onclick="searchShops()">Find Repair Shops</button>
+          <select id="sortBy">
+            <option value="distance">Sort by Distance</option>
+            <option value="rating">Sort by Rating</option>
+            <option value="reviews">Sort by Reviews</option>
+          </select>
+          <input type="number" id="resultsLimit" placeholder="Max Results (default: 30)" min="1">
+        </div>
       </div>
       <div id="map"></div>
     </div>
