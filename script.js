@@ -11,6 +11,26 @@ function initMap() {
   service = new google.maps.places.PlacesService(map);
 }
 
+// New repair cost estimation functionality
+function estimateCost() {
+  const brand = document.getElementById("carBrand").value;
+  const model = document.getElementById("carModel").value;
+  const year = document.getElementById("carYear").value;
+  const issue = document.getElementById("carIssue").value;
+
+  if (!brand || !model || !year || !issue) {
+    alert("Please fill all car details");
+    return;
+  }
+
+  // Generate random cost between 500 and 10000
+  const minCost = 500;
+  const maxCost = 10000;
+  const randomCost = Math.floor(Math.random() * (maxCost - minCost + 1)) + minCost;
+  
+  document.getElementById("costDisplay").textContent = `€${randomCost.toFixed(2)}`;
+}
+
 function searchShops() {
   const location = document.getElementById("locationInput").value;
   const radius = document.getElementById("radiusInput").value;
@@ -118,4 +138,3 @@ function searchShops() {
     });
   });
 }
-
