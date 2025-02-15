@@ -142,7 +142,6 @@ h2, h3 {
   margin-top: 0;
 }
 
-/* The following adds space below the title in the middle portion */
 h2 {
-  margin-bottom: 20px;
+  margin-bottom: 20px; /* Add space below the title */
 }
