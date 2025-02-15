@@ -2,22 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Car Repair Shop Finder</title>
+  <title>Car Repair Finder</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
-    <!-- Left Panel for Results -->
-    <div class="results-panel">
+    <!-- Left Panel - Car Details -->
+    <div class="left-panel">
+      <h2>Repair Cost Estimator</h2>
+      <form id="carForm">
+        <input type="text" id="carBrand" placeholder="Car Brand" required>
+        <input type="text" id="carModel" placeholder="Car Model" required>
+        <input type="number" id="carYear" placeholder="Manufacturing Year" required>
+        <textarea id="carIssue" placeholder="Describe the issue..." rows="4"></textarea>
+        <button type="button" onclick="estimateCost()">Estimate Repair Cost</button>
+      </form>
+      <div id="costEstimation">
+        <h3>Estimated Repair Cost:</h3>
+        <div id="costDisplay">€0.00</div>
+      </div>
+    </div>
+
+    <!-- Middle Panel - Search Results -->
+    <div class="middle-panel">
       <div id="results"></div>
     </div>
-    
-    <!-- Right Panel for Search and Map -->
-    <div class="search-map-panel">
+
+    <!-- Right Panel - Map & Search -->
+    <div class="right-panel">
       <div class="search-container">
         <input type="text" id="locationInput" placeholder="Enter Location">
         <input type="number" id="radiusInput" placeholder="Radius (km)">
-        <button onclick="searchShops()">Search</button>
+        <button onclick="searchShops()">Find Repair Shops</button>
       </div>
       <div id="map"></div>
     </div>
