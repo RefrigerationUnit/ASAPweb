@@ -1,3 +1,10 @@
+/* CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -45,12 +52,60 @@ body {
   margin-bottom: 20px;
 }
 
+.search-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center; /* Align items vertically */
+}
+
+button, select, #resultsLimit {
+  height: 40px; /* Set the same height for all elements */
+  padding: 10px; /* Consistent padding */
+  border-radius: 4px;
+  font-size: 14px; /* Consistent font size */
+  line-height: 1; /* Ensure text is vertically centered */
+  box-sizing: border-box; /* Include padding and border in the element's total height */
+  flex: 1; /* Allow elements to grow within the flex container */
+  margin: 0; /* Remove any default margin */
+}
+
+button {
+  background-color: #50C878; /* Mint green */
+  color: #333;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #40A060; /* Darker green on hover */
+}
+
+select, #resultsLimit {
+  border: 1px solid #555;
+  background-color: #666;
+  color: #ddd;
+  cursor: pointer;
+}
+
+select:hover, #resultsLimit:hover {
+  background-color: #777;
+}
+
+/* Ensure the input box aligns perfectly */
+#resultsLimit {
+  display: flex;
+  align-items: center; /* Center text vertically */
+  justify-content: center; /* Center text horizontally */
+}
+
 #map {
   flex: 1;
   border-radius: 4px;
 }
 
-input, textarea, button {
+input, textarea {
   padding: 12px;
   margin-bottom: 10px;
   border: 1px solid #555;
@@ -59,18 +114,6 @@ input, textarea, button {
   color: #ddd;
   width: 100%;
   box-sizing: border-box;
-}
-
-button {
-  background-color: #50C878;
-  color: #333;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-button:hover {
-  background-color: #40A060;
 }
 
 #costEstimation {
@@ -97,4 +140,8 @@ button:hover {
 h2, h3 {
   color: #50C878;
   margin-top: 0;
+}
+
+h2 {
+  margin-bottom: 20px; /* Add space below the title */
 }
