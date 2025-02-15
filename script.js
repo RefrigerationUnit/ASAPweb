@@ -109,7 +109,14 @@ function searchShops() {
       }
 
       // Display results (up to the specified limit or 30 by default)
-      resultsDiv.innerHTML = `<h2>Found the following Car Repair Shops:</h2>`;
+      const displayedResults = Math.min(results.length, resultsLimit); // Ensure we don't exceed the limit
+
+      // Handle singular/plural for the results header
+      const resultsHeader = displayedResults === 1
+        ? "Found 1 Car Repair Shop"
+        : `Found ${displayedResults} Car Repair Shops`;
+
+      resultsDiv.innerHTML = `<h2>${resultsHeader}</h2>`;
       
       const bounds = new google.maps.LatLngBounds();
       bounds.extend(userLocation); // Include user's location in bounds
