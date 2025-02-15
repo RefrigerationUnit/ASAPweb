@@ -3,69 +3,60 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #333; /* Dark gray background */
-  color: #ddd; /* White-gray font color */
+  overflow: hidden; /* Prevent whole-page scrolling */
+  background-color: #333;
+  color: #ddd;
 }
 
 .container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 800px;
+  height: 100vh;
+}
+
+.search-map-panel {
+  width: 40%;
+  min-width: 400px;
   padding: 20px;
-  box-sizing: border-box;
+  background-color: #444;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.results-panel {
+  width: 60%;
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 20px;
 }
 
 .search-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  gap: 10px;
   margin-bottom: 20px;
-  width: 100%;
-}
-
-input, button {
-  padding: 10px;
-  margin-right: 10px;
-  border: 1px solid #555; /* Darker border for contrast */
-  border-radius: 4px;
-  background-color: #777; /* Light gray boxes */
-  color: #ddd; /* White-gray font color */
-}
-
-#locationInput {
-  width: 250px;
-}
-
-#radiusInput {
-  width: 100px;
-}
-
-button {
-  background-color: #7CFC00; /* Electric green search button */
-  color: #333; /* Dark gray font color */
-  border: none;
-  cursor: pointer;
 }
 
 #map {
   width: 100%;
-  height: 300px;
+  height: calc(100vh - 160px); /* Account for search bar height */
   border-radius: 4px;
-  margin-bottom: 20px;
 }
 
-#results {
-  background-color: #777; /* Light gray boxes */
-  padding: 20px;
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+/* Keep existing styles for inputs/buttons, add: */
+input, button {
   width: 100%;
-  margin-top: 20px;
+  margin-right: 0;
 }
 
+button {
+  margin-top: 10px;
+}
 
+.shop {
+  background-color: #555;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
