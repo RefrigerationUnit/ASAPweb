@@ -20,6 +20,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  overflow: hidden; /* Maintain for desktop */
 }
 
 .container {
@@ -155,24 +156,36 @@ h2 {
 
 /* Mobile Styles */
 @media (max-width: 768px) {
+  body {
+    overflow: auto !important; /* Enable scrolling for mobile */
+    height: auto;
+  }
+
   .container {
     flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible; /* Remove scroll restriction */
   }
 
-  .left-panel, .middle-panel, .right-panel {
-    flex: none;
-    width: 100%;
-    border-right: none;
-    border-left: none;
-    border-bottom: 2px solid #555;
+  .left-panel, 
+  .middle-panel, 
+  .right-panel {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
   }
 
-  .search-controls {
-    flex-direction: column;
+  /* Allow middle panel to scroll its content */
+  .middle-panel {
+    overflow-y: auto;
   }
 
+  /* Fix map height */
   #map {
-    height: 300px; /* Fixed height for mobile */
+    height: 300px;
+    flex: none; /* Prevent map from growing */
   }
 }
 
@@ -297,4 +310,31 @@ h2 {
 
 .shop:hover {
   background-color: rgba(100, 100, 100, 0.8); /* Slightly lighter on hover */
+}
+
+.shop {
+  background-color: rgba(85, 85, 85, 0.8); /* Add transparency */
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  cursor: pointer; /* Change cursor to pointer */
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.shop:hover {
+  background-color: rgba(100, 100, 100, 0.8); /* Slightly lighter on hover */
+}
+
+.shop-details {
+  flex: 1; /* Allow the details to take up remaining space */
+}
+
+.click-here {
+  color: #50C878;
+  font-weight: bold;
+  margin-left: 20px; /* Add some spacing between details and "Click here" */
+  white-space: nowrap; /* Prevent text from wrapping */
 }
