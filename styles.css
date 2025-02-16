@@ -19,8 +19,7 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
-  overflow: hidden; /* Maintain for desktop */
+  background-attachment: fixed; /* Fixed background for desktop */
 }
 
 .container {
@@ -143,49 +142,74 @@ input, textarea {
   padding: 15px;
   border-radius: 4px;
   margin-bottom: 10px;
+  cursor: pointer; /* Change cursor to pointer */
+  transition: background-color 0.3s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-h2, h3 {
+.shop:hover {
+  background-color: rgba(100, 100, 100, 0.8); /* Slightly lighter on hover */
+}
+
+.shop-details {
+  flex: 1; /* Allow the details to take up remaining space */
+}
+
+.click-here {
   color: #50C878;
-  margin-top: 0;
-}
-
-h2 {
-  margin-bottom: 20px; /* Add space below the title */
+  font-weight: bold;
+  margin-left: 20px; /* Add some spacing between details and "Click here" */
+  white-space: nowrap; /* Prevent text from wrapping */
 }
 
 /* Mobile Styles */
 @media (max-width: 768px) {
   body {
-    overflow: auto !important; /* Enable scrolling for mobile */
+    overflow: auto; /* Enable scrolling for mobile */
     height: auto;
+    min-height: 100vh; /* Ensure body covers the full viewport height */
+    background-attachment: scroll; /* Allow background to scroll on mobile */
   }
 
   .container {
     flex-direction: column;
     height: auto;
-    min-height: 100vh;
-    overflow: visible; /* Remove scroll restriction */
+    min-height: 100vh; /* Ensure container covers the full viewport height */
   }
 
-  .left-panel, 
-  .middle-panel, 
-  .right-panel {
-    height: auto;
-    min-height: 0;
-    overflow: visible;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
+  .left-panel, .middle-panel, .right-panel {
+    flex: none;
+    width: 100%;
+    border-right: none;
+    border-left: none;
+    border-bottom: 2px solid #555;
+    height: auto; /* Allow panels to grow with content */
   }
 
-  /* Allow middle panel to scroll its content */
-  .middle-panel {
-    overflow-y: auto;
+  .search-controls {
+    flex-direction: column;
   }
 
-  /* Fix map height */
   #map {
-    height: 300px;
+    height: 300px; /* Fixed height for mobile */
     flex: none; /* Prevent map from growing */
+  }
+
+  /* Fix for fixed background on mobile */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('./images/pexels-suzyhazelwood-1629236.jpg'); /* Same background image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1; /* Place behind other content */
   }
 }
 
@@ -297,44 +321,4 @@ h2 {
 
 .hidden {
   display: none !important;
-}
-
-.shop {
-  background-color: rgba(85, 85, 85, 0.8); /* Add transparency */
-  padding: 15px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  cursor: pointer; /* Change cursor to pointer */
-  transition: background-color 0.3s;
-}
-
-.shop:hover {
-  background-color: rgba(100, 100, 100, 0.8); /* Slightly lighter on hover */
-}
-
-.shop {
-  background-color: rgba(85, 85, 85, 0.8); /* Add transparency */
-  padding: 15px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-  cursor: pointer; /* Change cursor to pointer */
-  transition: background-color 0.3s;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.shop:hover {
-  background-color: rgba(100, 100, 100, 0.8); /* Slightly lighter on hover */
-}
-
-.shop-details {
-  flex: 1; /* Allow the details to take up remaining space */
-}
-
-.click-here {
-  color: #50C878;
-  font-weight: bold;
-  margin-left: 20px; /* Add some spacing between details and "Click here" */
-  white-space: nowrap; /* Prevent text from wrapping */
 }
