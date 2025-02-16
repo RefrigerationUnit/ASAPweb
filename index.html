@@ -2,10 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Car Repair Finder</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- Add this right after the <body> tag -->
+<nav class="top-bar">
+  <div class="logo">ASAPweb</div>
+  <div class="nav-middle" id="navMiddle"></div>
+  <div class="nav-right">
+    <button id="authButton" onclick="toggleAuthModal()">Login/Signup</button>
+    <button id="logoutButton" class="hidden" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- Authentication Modal -->
+<div id="authModal" class="auth-modal">
+  <div class="auth-content">
+    <span class="close" onclick="toggleAuthModal()">&times;</span>
+    
+    <!-- Signup Form -->
+    <div id="signupForm">
+      <h2>Sign Up</h2>
+      <input type="email" id="signupEmail" placeholder="Email">
+      <input type="password" id="signupPassword" placeholder="Password">
+      <input type="password" id="confirmPassword" placeholder="Confirm Password">
+      <button onclick="signup()">Create Account</button>
+      <p>Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
+    </div>
+
+    <!-- Login Form -->
+    <div id="loginForm" class="hidden">
+      <h2>Login</h2>
+      <input type="email" id="loginEmail" placeholder="Email">
+      <input type="password" id="loginPassword" placeholder="Password">
+      <button onclick="login()">Login</button>
+      <p>Need an account? <a href="#" onclick="toggleForms()">Create Account</a></p>
+    </div>
+  </div>
+</div>
   <div class="container">
     <!-- Left Panel - Car Details -->
     <div class="left-panel">
