@@ -125,7 +125,7 @@ function processResults(results, userLocation, sortBy, resultsLimit) {
     : `Found ${displayedResults} Car Repair Shops`;
 
   resultsDiv.innerHTML = `<h2>${resultsHeader}</h2>`;
-  
+
   const bounds = new google.maps.LatLngBounds();
   bounds.extend(userLocation); // Include user's location in bounds
 
@@ -145,15 +145,24 @@ function processResults(results, userLocation, sortBy, resultsLimit) {
     // Extend bounds to include this marker
     bounds.extend(place.geometry.location);
 
-    // Add to results list
-    resultsDiv.innerHTML += `
-      <div class="shop">
-        <strong>${index + 1}. ${place.name}</strong><br>
-        ${place.vicinity}<br>
-        Distance: ${distance} km<br>
-        Rating: ${place.rating || 'Not available'}<br>
-        Reviews: ${place.user_ratings_total || 'Not available'}
-      </div><br>`;
+    // Add to results list with a clickable link to Google Maps
+    const shopElement = document.createElement("div");
+    shopElement.className = "shop";
+    shopElement.innerHTML = `
+      <strong>${index + 1}. ${place.name}</strong><br>
+      ${place.vicinity}<br>
+      Distance: ${distance} km<br>
+      Rating: ${place.rating || 'Not available'}<br>
+      Reviews: ${place.user_ratings_total || 'Not available'}
+    `;
+
+    // Add click event to open Google Maps in a new tab
+    shopElement.addEventListener("click", () => {
+      const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}+${encodeURIComponent(place.vicinity)}`;
+      window.open(mapsUrl, "_blank");
+    });
+
+    resultsDiv.appendChild(shopElement);
   });
 
   // Fit the map to the bounds with padding and zoom constraints
