@@ -145,15 +145,20 @@ function processResults(results, userLocation, sortBy, resultsLimit) {
     // Extend bounds to include this marker
     bounds.extend(place.geometry.location);
 
-    // Add to results list with a clickable link to Google Maps
+    // Create the shop element
     const shopElement = document.createElement("div");
     shopElement.className = "shop";
+
+    // Add the shop details
     shopElement.innerHTML = `
-      <strong>${index + 1}. ${place.name}</strong><br>
-      ${place.vicinity}<br>
-      Distance: ${distance} km<br>
-      Rating: ${place.rating || 'Not available'}<br>
-      Reviews: ${place.user_ratings_total || 'Not available'}
+      <div class="shop-details">
+        <strong>${index + 1}. ${place.name}</strong><br>
+        ${place.vicinity}<br>
+        Distance: ${distance} km<br>
+        Rating: ${place.rating || 'Not available'}<br>
+        Reviews: ${place.user_ratings_total || 'Not available'}
+      </div>
+      <div class="click-here">Click here</div>
     `;
 
     // Add click event to open Google Maps in a new tab
