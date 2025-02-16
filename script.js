@@ -235,6 +235,11 @@ function signup() {
   currentUser = email;
   updateNav();
   toggleAuthModal();
+
+  localStorage.setItem('user', JSON.stringify({ email }));
+  currentUser = email;
+  showUserSection();
+  toggleAuthModal();
 }
 
 function login() {
@@ -246,12 +251,36 @@ function login() {
   localStorage.setItem('user', JSON.stringify({ email }));
   updateNav();
   toggleAuthModal();
+
+  currentUser = email;
+  showUserSection();
+  toggleAuthModal();
+}
+
+// Add these new functions
+function showUserSection() {
+  document.getElementById('userSection').classList.remove('hidden');
+  document.querySelector('.container').classList.add('hidden');
+}
+
+function goHome() {
+  document.getElementById('userSection').classList.add('hidden');
+  document.querySelector('.container').classList.remove('hidden');
+}
+
+function showPersonalInfo() {
+  alert('Personal Info feature coming soon!');
+}
+
+function showUploadBill() {
+  alert('Upload Bill feature coming soon!');
 }
 
 function logout() {
   localStorage.removeItem('user');
   currentUser = null;
   updateNav();
+  goHome(); // Return to home when logging out
 }
 
 function updateNav() {
