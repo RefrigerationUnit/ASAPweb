@@ -285,3 +285,16 @@ h2 {
 .hidden {
   display: none !important;
 }
+
+.shop {
+  background-color: rgba(85, 85, 85, 0.8); /* Add transparency */
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  cursor: pointer; /* Change cursor to pointer */
+  transition: background-color 0.3s;
+}
+
+.shop:hover {
+  background-color: rgba(100, 100, 100, 0.8); /* Slightly lighter on hover */
+}
