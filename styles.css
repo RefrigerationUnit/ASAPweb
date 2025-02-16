@@ -13,6 +13,13 @@ body {
   overflow: hidden;
   background-color: #333;
   color: #ddd;
+  display: flex;
+  flex-direction: column;
+  background-image: url('./images/pexels-suzyhazelwood-1629236.jpg'); /* Replace with your image path */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .container {
@@ -23,7 +30,7 @@ body {
 .left-panel {
   flex: 1;
   padding: 20px;
-  background-color: #444;
+  background-color: rgba(68, 68, 68, 0.8); /* Add transparency */
   border-right: 2px solid #555;
   display: flex;
   flex-direction: column;
@@ -33,13 +40,13 @@ body {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
-  background-color: #3a3a3a;
+  background-color: rgba(58, 58, 58, 0.8); /* Add transparency */
 }
 
 .right-panel {
   flex: 1;
   padding: 20px;
-  background-color: #444;
+  background-color: rgba(68, 68, 68, 0.8); /* Add transparency */
   border-left: 2px solid #555;
   display: flex;
   flex-direction: column;
@@ -119,7 +126,7 @@ input, textarea {
 #costEstimation {
   margin-top: auto;
   padding: 20px;
-  background-color: #555;
+  background-color: rgba(85, 85, 85, 0.8); /* Add transparency */
   border-radius: 4px;
 }
 
@@ -131,7 +138,7 @@ input, textarea {
 }
 
 .shop {
-  background-color: #555;
+  background-color: rgba(85, 85, 85, 0.8); /* Add transparency */
   padding: 15px;
   border-radius: 4px;
   margin-bottom: 10px;
@@ -171,8 +178,7 @@ h2 {
 
 /* Add to styles.css */
 .top-bar {
-  position: fixed;
-  top: 0;
+  position: static; /* Change from fixed to static */
   width: 100%;
   padding: 15px 30px;
   background: rgba(255, 255, 255, 0.1);
@@ -278,60 +284,4 @@ h2 {
 
 .hidden {
   display: none !important;
-}
-
-/* Add to your existing CSS */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  overflow: hidden;
-  background-color: #333;
-  color: #ddd;
-  display: flex;
-  flex-direction: column;
-}
-
-.top-bar {
-  position: static; /* Change from fixed to static */
-  width: 100%;
-  padding: 15px 30px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  z-index: 1000;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  background: linear-gradient(to right, 
-    rgba(255,255,255,0.05) 0%,
-    rgba(255,255,255,0.1) 50%,
-    rgba(255,255,255,0.05) 100%);
-}
-
-.container {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-}
-
-/* Update the panel heights */
-.left-panel, .middle-panel, .right-panel {
-  height: 100%;
-  overflow-y: auto;
-}
-
-/* Update mobile styles */
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-    overflow-y: auto;
-  }
-
-  .left-panel, .middle-panel, .right-panel {
-    height: auto;
-    min-height: 0;
-  }
 }
