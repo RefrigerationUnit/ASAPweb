@@ -25,12 +25,6 @@ body {
 .container {
   display: flex;
   height: 100vh;
-  transition: opacity 0.3s; /* Add smooth transition */
-}
-
-.container.hidden {
-  opacity: 0;
-  pointer-events: none;
 }
 
 .left-panel {
@@ -72,14 +66,14 @@ body {
 }
 
 button, select, #resultsLimit {
-  height: 40px; /* Set the same height for all elements */
-  padding: 10px; /* Consistent padding */
+  height: 50px; /* Increased height for buttons */
+  padding: 15px 20px; /* Increased padding for buttons */
   border-radius: 4px;
-  font-size: 14px; /* Consistent font size */
+  font-size: 14px;
   line-height: 1; /* Ensure text is vertically centered */
-  box-sizing: border-box; /* Include padding and border in the element's total height */
-  flex: 1; /* Allow elements to grow within the flex container */
-  margin: 0; /* Remove any default margin */
+  box-sizing: border-box;
+  flex: 1;
+  margin: 0;
 }
 
 button {
@@ -134,6 +128,7 @@ input, textarea {
   padding: 20px;
   background-color: rgba(85, 85, 85, 0.8); /* Add transparency */
   border-radius: 4px;
+  margin-bottom: 30px; /* Added space below */
 }
 
 #costDisplay {
@@ -327,42 +322,4 @@ input, textarea {
 
 .hidden {
   display: none !important;
-}
-
-/* User Section Styles */
-#userSection {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 3000;
-}
-
-.user-options {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 90%;
-  max-width: 400px;
-}
-
-.user-btn {
-  padding: 20px;
-  background: #50C878;
-  color: #333;
-  border: none;
-  border-radius: 8px;
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.user-btn:hover {
-  background: #40A060;
-  transform: translateY(-2px);
 }
