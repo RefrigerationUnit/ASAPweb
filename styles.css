@@ -22,34 +22,42 @@ body {
   background-attachment: fixed; /* Fixed background for desktop */
 }
 
+/* In styles.css */
+
 .container {
   display: flex;
-  height: 100vh;
+  flex: 1;
+  min-height: 0; /* Add this line */
 }
 
 .left-panel {
   flex: 1;
   padding: 20px;
-  background-color: rgba(68, 68, 68, 0.8); /* Add transparency */
+  background-color: rgba(68, 68, 68, 0.8);
   border-right: 2px solid #555;
   display: flex;
   flex-direction: column;
+  overflow-y: auto; /* Add this line */
+  min-height: 0; /* Add this line */
 }
 
 .middle-panel {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
-  background-color: rgba(58, 58, 58, 0.8); /* Add transparency */
+  background-color: rgba(58, 58, 58, 0.8);
+  min-height: 0; /* Add this line */
 }
 
 .right-panel {
   flex: 1;
   padding: 20px;
-  background-color: rgba(68, 68, 68, 0.8); /* Add transparency */
+  background-color: rgba(68, 68, 68, 0.8);
   border-left: 2px solid #555;
   display: flex;
   flex-direction: column;
+  overflow-y: auto; /* Add this line */
+  min-height: 0; /* Add this line */
 }
 
 .search-container {
