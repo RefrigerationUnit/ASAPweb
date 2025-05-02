@@ -7,41 +7,43 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Add this right after the <body> tag -->
-<nav class="top-bar">
-  <div class="logo">ASAPweb</div>
-  <div class="nav-middle" id="navMiddle"></div>
-  <div class="nav-right">
-    <button id="authButton" onclick="toggleAuthModal()">Login/Signup</button>
-    <button id="logoutButton" class="hidden" onclick="logout()">Logout</button>
-  </div>
-</nav>
-
-<!-- Authentication Modal -->
-<div id="authModal" class="auth-modal">
-  <div class="auth-content">
-    <span class="close" onclick="toggleAuthModal()">&times;</span>
-    
-    <!-- Signup Form -->
-    <div id="signupForm">
-      <h2>Sign Up</h2>
-      <input type="email" id="signupEmail" placeholder="Email">
-      <input type="password" id="signupPassword" placeholder="Password">
-      <input type="password" id="confirmPassword" placeholder="Confirm Password">
-      <button onclick="signup()">Create Account</button>
-      <p>Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
+  <!-- Top Navigation Bar -->
+  <nav class="top-bar">
+    <div class="logo">ASAPweb</div>
+    <div class="nav-middle" id="navMiddle"></div>
+    <div class="nav-right">
+      <button id="authButton" onclick="toggleAuthModal()">Login/Signup</button>
+      <button id="logoutButton" class="hidden" onclick="logout()">Logout</button>
     </div>
+  </nav>
 
-    <!-- Login Form -->
-    <div id="loginForm" class="hidden">
-      <h2>Login</h2>
-      <input type="email" id="loginEmail" placeholder="Email">
-      <input type="password" id="loginPassword" placeholder="Password">
-      <button onclick="login()">Login</button>
-      <p>Need an account? <a href="#" onclick="toggleForms()">Create Account</a></p>
+  <!-- Authentication Modal -->
+  <div id="authModal" class="auth-modal">
+    <div class="auth-content">
+      <span class="close" onclick="toggleAuthModal()">&times;</span>
+      
+      <!-- Signup Form -->
+      <div id="signupForm">
+        <h2>Sign Up</h2>
+        <input type="email" id="signupEmail" placeholder="Email">
+        <input type="password" id="signupPassword" placeholder="Password">
+        <input type="password" id="confirmPassword" placeholder="Confirm Password">
+        <button onclick="signup()">Create Account</button>
+        <p>Already have an account? <a href="#" onclick="toggleForms()">Login</a></p>
+      </div>
+
+      <!-- Login Form -->
+      <div id="loginForm" class="hidden">
+        <h2>Login</h2>
+        <input type="email" id="loginEmail" placeholder="Email">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <p>Need an account? <a href="#" onclick="toggleForms()">Create Account</a></p>
+      </div>
     </div>
   </div>
-</div>
+
+  <!-- Main Container -->
   <div class="container">
     <!-- Left Panel - Car Details -->
     <div class="left-panel">
@@ -77,24 +79,34 @@
             <option value="reviews">Sort by Reviews</option>
           </select>
           <input type="number" id="resultsLimit" placeholder="Max Results (default: 30)" min="1">
+          
+          <!-- Vehicle Inspection Toggle -->
+          <div class="toggle-container">
+            <span class="toggle-label">Show Vehicle Inspection Shops</span>
+            <label class="switch">
+              <input type="checkbox" id="inspectionToggle">
+              <span class="slider round"></span>
+            </label>
+          </div>
         </div>
       </div>
       <div id="map"></div>
     </div>
   </div>
+
+  <!-- Scripts -->
   <script src="script.js"></script>
   <script async defer
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ_wvUHsBJuwTL-TKi6S2-Q1oLdhdAAz4&libraries=places,geometry&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZ_wvUHsBJuwTL-TKi6S2-Q1oLdhdAAz4&libraries=places,geometry&callback=initMap">
   </script>
 
   <!-- Logged-in User Section -->
-<div id="userSection" class="hidden">
-  <div class="user-options">
-    <button class="user-btn" onclick="showPersonalInfo()">Personal Info</button>
-    <button class="user-btn" onclick="showUploadBill()">Upload Bill</button>
-    <button class="user-btn" onclick="goHome()">Go Home</button>
+  <div id="userSection" class="hidden">
+    <div class="user-options">
+      <button class="user-btn" onclick="showPersonalInfo()">Personal Info</button>
+      <button class="user-btn" onclick="showUploadBill()">Upload Bill</button>
+      <button class="user-btn" onclick="goHome()">Go Home</button>
+    </div>
   </div>
-</div>
-
 </body>
 </html>
