@@ -2,7 +2,8 @@ let map;
 let service;
 let userMarker;
 let shops = [];
-let nextPageToken = null; // Store the next page token for pagination
+let nextPageToken = null;
+let currentUser = null; // Moved to top for better organization
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
@@ -18,14 +19,13 @@ function searchShops() {
   const sortBy = document.getElementById("sortBy").value;
   const resultsLimitInput = document.getElementById("resultsLimit").value;
   const geocoder = new google.maps.Geocoder();
+  const showInspections = document.getElementById('inspectionToggle').checked;
 
-  // Validate inputs
   if (!location || !radius || isNaN(radius) || radius <= 0) {
     document.getElementById("results").innerHTML = "Please enter a valid location and radius.";
     return;
   }
 
-  // Set default results limit to 30 if input is empty or invalid
   const resultsLimit = resultsLimitInput && !isNaN(resultsLimitInput) && resultsLimitInput > 0
     ? parseInt(resultsLimitInput, 10)
     : 30;
@@ -40,31 +40,31 @@ function searchShops() {
     map.setCenter(userLocation);
     map.setZoom(13);
 
-    // Clear previous markers and reset nextPageToken
     if (userMarker) userMarker.setMap(null);
     shops.forEach(m => m.setMap(null));
     shops = [];
     nextPageToken = null;
 
-    // Create user marker
     userMarker = new google.maps.Marker({
       map: map,
       position: userLocation,
       icon: { url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png" }
     });
 
-    // Start the search process
-    performSearch(userLocation, radius, sortBy, resultsLimit);
+    // Pass showInspections to performSearch
+    performSearch(userLocation, radius, sortBy, resultsLimit, showInspections);
   });
 }
 
-function performSearch(userLocation, radius, sortBy, resultsLimit, accumulatedResults = []) {
+// Added showInspections parameter
+function performSearch(userLocation, radius, sortBy, resultsLimit, showInspections, accumulatedResults = []) {
   const request = {
     location: userLocation,
     radius: radius * 1000,
     type: "car_repair",
+    keyword: showInspections ? "" : "-vehicle technical inspection",
     rankBy: google.maps.places.RankBy.PROMINENCE,
-    pageToken: nextPageToken // Use the next page token for pagination
+    pageToken: nextPageToken
   };
 
   service.nearbySearch(request, (results, status, pagination) => {
@@ -73,36 +73,39 @@ function performSearch(userLocation, radius, sortBy, resultsLimit, accumulatedRe
       return;
     }
 
-    // Add distance to each result
     results.forEach(place => {
       place.distance = google.maps.geometry.spherical.computeDistanceBetween(
         userLocation, place.geometry.location
       );
     });
 
-    // Accumulate results
     accumulatedResults = accumulatedResults.concat(results);
 
-    // Check if we have more results and need to fetch the next page
     if (pagination.hasNextPage && accumulatedResults.length < resultsLimit) {
       nextPageToken = pagination.nextPageToken;
-
-      // Delay the next request to respect Google's API rate limits
       setTimeout(() => {
-        performSearch(userLocation, radius, sortBy, resultsLimit, accumulatedResults);
-      }, 2000); // Wait 2 seconds before making the next request
+        performSearch(userLocation, radius, sortBy, resultsLimit, showInspections, accumulatedResults);
+      }, 2000);
     } else {
-      // We've fetched all results or reached the limit
-      processResults(accumulatedResults, userLocation, sortBy, resultsLimit);
+      // Pass showInspections to processResults
+      processResults(accumulatedResults, userLocation, sortBy, resultsLimit, showInspections);
     }
   });
 }
 
-function processResults(results, userLocation, sortBy, resultsLimit) {
+// Added showInspections parameter
+function processResults(results, userLocation, sortBy, resultsLimit, showInspections) {
   const resultsDiv = document.getElementById("results");
   resultsDiv.innerHTML = "";
 
-  // Sort results based on selected option
+  // Client-side filtering moved to start of processing
+  if (!showInspections) {
+    results = results.filter(place => 
+      !place.name.toLowerCase().includes('technical inspection') &&
+      !place.name.toLowerCase().includes('vehicle inspection')
+    );
+  }
+
   switch (sortBy) {
     case "rating":
       results.sort((a, b) => (b.rating || 0) - (a.rating || 0));
@@ -110,16 +113,11 @@ function processResults(results, userLocation, sortBy, resultsLimit) {
     case "reviews":
       results.sort((a, b) => (b.user_ratings_total || 0) - (a.user_ratings_total || 0));
       break;
-    case "distance":
     default:
       results.sort((a, b) => a.distance - b.distance);
-      break;
   }
 
-  // Display results (up to the specified limit)
   const displayedResults = Math.min(results.length, resultsLimit);
-
-  // Handle singular/plural for the results header
   const resultsHeader = displayedResults === 1
     ? "Found 1 Car Repair Shop"
     : `Found ${displayedResults} Car Repair Shops`;
@@ -127,13 +125,10 @@ function processResults(results, userLocation, sortBy, resultsLimit) {
   resultsDiv.innerHTML = `<h2>${resultsHeader}</h2>`;
 
   const bounds = new google.maps.LatLngBounds();
-  bounds.extend(userLocation); // Include user's location in bounds
+  bounds.extend(userLocation);
 
-  // Display up to the specified number of results
   results.slice(0, resultsLimit).forEach((place, index) => {
     const distance = (place.distance / 1000).toFixed(1);
-
-    // Create marker
     const marker = new google.maps.Marker({
       map: map,
       position: place.geometry.location,
@@ -141,15 +136,10 @@ function processResults(results, userLocation, sortBy, resultsLimit) {
       icon: { url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png" }
     });
     shops.push(marker);
-
-    // Extend bounds to include this marker
     bounds.extend(place.geometry.location);
 
-    // Create the shop element
     const shopElement = document.createElement("div");
     shopElement.className = "shop";
-
-    // Add the shop details
     shopElement.innerHTML = `
       <div class="shop-details">
         <strong>${index + 1}. ${place.name}</strong><br>
@@ -161,7 +151,6 @@ function processResults(results, userLocation, sortBy, resultsLimit) {
       <div class="click-here">Click here</div>
     `;
 
-    // Add click event to open Google Maps in a new tab
     shopElement.addEventListener("click", () => {
       const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}+${encodeURIComponent(place.vicinity)}`;
       window.open(mapsUrl, "_blank");
@@ -170,15 +159,13 @@ function processResults(results, userLocation, sortBy, resultsLimit) {
     resultsDiv.appendChild(shopElement);
   });
 
-  // Fit the map to the bounds with padding and zoom constraints
   map.fitBounds(bounds, {
-    top: 50,   // Reduced padding for the new layout
+    top: 50,
     bottom: 50,
     left: 20,
     right: 20
   });
 
-  // Set a minimum zoom level to prevent the map from zooming out too far
   const minZoomLevel = 12;
   google.maps.event.addListenerOnce(map, "bounds_changed", () => {
     if (map.getZoom() > minZoomLevel) {
@@ -187,29 +174,7 @@ function processResults(results, userLocation, sortBy, resultsLimit) {
   });
 }
 
-// Repair Cost Estimation Function
-function estimateCost() {
-  const brand = document.getElementById("carBrand").value;
-  const model = document.getElementById("carModel").value;
-  const year = document.getElementById("carYear").value;
-  const issue = document.getElementById("carIssue").value;
-
-  if (!brand || !model || !year || !issue) {
-    alert("Please fill all car details");
-    return;
-  }
-
-  // Generate random cost between 500 and 10000
-  const minCost = 500;
-  const maxCost = 10000;
-  const randomCost = Math.floor(Math.random() * (maxCost - minCost + 1)) + minCost;
-  
-  document.getElementById("costDisplay").textContent = `€${randomCost.toFixed(2)}`;
-}
-
-// Add to script.js
-let currentUser = null;
-
+// Authentication functions
 function toggleAuthModal() {
   const modal = document.getElementById('authModal');
   modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
@@ -230,14 +195,10 @@ function signup() {
     return;
   }
 
-  // In real implementation, send to backend
+  // Removed duplicate localStorage calls
   localStorage.setItem('user', JSON.stringify({ email }));
   currentUser = email;
   updateNav();
-  toggleAuthModal();
-
-  localStorage.setItem('user', JSON.stringify({ email }));
-  currentUser = email;
   showUserSection();
   toggleAuthModal();
 }
@@ -246,18 +207,14 @@ function login() {
   const email = document.getElementById('loginEmail').value;
   const password = document.getElementById('loginPassword').value;
 
-  // In real implementation, verify credentials
-  currentUser = email;
   localStorage.setItem('user', JSON.stringify({ email }));
-  updateNav();
-  toggleAuthModal();
-
   currentUser = email;
+  updateNav();
   showUserSection();
   toggleAuthModal();
 }
 
-// Add these new functions
+// User section functions
 function showUserSection() {
   document.getElementById('userSection').classList.remove('hidden');
   document.querySelector('.container').classList.add('hidden');
@@ -268,19 +225,11 @@ function goHome() {
   document.querySelector('.container').classList.remove('hidden');
 }
 
-function showPersonalInfo() {
-  alert('Personal Info feature coming soon!');
-}
-
-function showUploadBill() {
-  alert('Upload Bill feature coming soon!');
-}
-
 function logout() {
   localStorage.removeItem('user');
   currentUser = null;
   updateNav();
-  goHome(); // Return to home when logging out
+  goHome();
 }
 
 function updateNav() {
@@ -299,7 +248,7 @@ function updateNav() {
   }
 }
 
-// Check login status on page load
+// Initialization
 window.onload = function() {
   const user = localStorage.getItem('user');
   if (user) {
@@ -308,10 +257,27 @@ window.onload = function() {
   }
 }
 
-// Close modal when clicking outside
 window.onclick = function(event) {
   const modal = document.getElementById('authModal');
   if (event.target === modal) {
     toggleAuthModal();
   }
+}
+
+// Repair Cost Estimation
+function estimateCost() {
+  const brand = document.getElementById('carBrand').value;
+  const model = document.getElementById('carModel').value;
+  const year = document.getElementById('carYear').value;
+  const issue = document.getElementById('carIssue').value;
+
+  if (!brand || !model || !year || !issue) {
+    alert("Please fill all car details");
+    return;
+  }
+
+  const minCost = 500;
+  const maxCost = 10000;
+  const randomCost = Math.floor(Math.random() * (maxCost - minCost + 1)) + minCost;
+  document.getElementById('costDisplay').textContent = `€${randomCost.toFixed(2)}`;
 }
