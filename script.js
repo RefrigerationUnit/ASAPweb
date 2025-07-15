@@ -225,6 +225,15 @@ function goHome() {
   document.querySelector('.container').classList.remove('hidden');
 }
 
+// Placeholder handlers to avoid errors when user option buttons are clicked
+function showPersonalInfo() {
+  alert('Personal info feature coming soon');
+}
+
+function showUploadBill() {
+  alert('Upload bill feature coming soon');
+}
+
 function logout() {
   localStorage.removeItem('user');
   currentUser = null;
